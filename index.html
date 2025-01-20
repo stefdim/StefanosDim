@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StefanosDim | Portfolio</title>
+    <title>StefanosDim | Portofolio</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 
@@ -44,7 +44,6 @@
         </div>
     </nav>
 
-
     <!-- Home section -->
     <section id="home">
         <h1 class="glowing-text">
@@ -52,17 +51,13 @@
         </h1>
 
 
-        <span id="developer-title">Full Stack Software Developer</span> <br>
+        <div id="developer-title" class="typing-effect"></div> <br>
         <p class="showcase-text">Explore my portfolio to discover my <a href="#projects">projects</a>, <a
                 href="#skills">skills</a>, and how
             we
             can create something extraordinary <a href="#contact">together</a>.
         </p>
     </section>
-
-
-
-
 
     <section id="projects">
         <h1 class="glowing-text">My Projects</h1>
@@ -225,7 +220,45 @@
     <!-- Back to Top Button -->
     <button id="backToTop" title="Go to top">↑</button>
 
+    <script>
+        const titles = [
+            "Full Stack Software Developer",
+            "IT Engineer",
+            "CyberSecurity Enthusiast"
+        ];
 
+        let currentTitleIndex = 0;
+        let isDeleting = false;
+        let currentText = "";
+        const titleElement = document.getElementById("developer-title");
+
+        function typeEffect() {
+            const fullText = titles[currentTitleIndex];
+
+            if (isDeleting) {
+                currentText = fullText.substring(0, currentText.length - 1); // Remove one character
+            } else {
+                currentText = fullText.substring(0, currentText.length + 1); // Add one character
+            }
+
+            titleElement.textContent = currentText;
+
+            let typingSpeed = isDeleting ? 100 : 150; // Speed up when deleting
+            if (!isDeleting && currentText === fullText) {
+                typingSpeed = 2000; // Pause before deleting
+                isDeleting = true;
+            } else if (isDeleting && currentText === "") {
+                isDeleting = false;
+                currentTitleIndex = (currentTitleIndex + 1) % titles.length; // Move to the next title
+            }
+
+            setTimeout(typeEffect, typingSpeed);
+        }
+
+        // Start the effect
+        typeEffect();
+
+    </script>
 
 </body>
 
