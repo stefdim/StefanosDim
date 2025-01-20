@@ -221,42 +221,57 @@
     <button id="backToTop" title="Go to top">↑</button>
 
     <script>
-        const titles = [
+          const titles = [
             "Full Stack Software Developer",
-            "IT Engineer",
-            "CyberSecurity Enthusiast"
+            "Information Technology Engineer",
+            "CyberSecurity and Networks Enthusiast"
         ];
 
-        let currentTitleIndex = 0;
-        let isDeleting = false;
-        let currentText = "";
         const titleElement = document.getElementById("developer-title");
+        let currentTitleIndex = 0;
 
-        function typeEffect() {
-            const fullText = titles[currentTitleIndex];
+        function blendTitles() {
+            const currentTitle = titles[currentTitleIndex];
+            const nextTitle = titles[(currentTitleIndex + 1) % titles.length];
+            let blendIndex = 0;
 
-            if (isDeleting) {
-                currentText = fullText.substring(0, currentText.length - 1); // Remove one character
-            } else {
-                currentText = fullText.substring(0, currentText.length + 1); // Add one character
+            // Prepare title element
+            titleElement.innerHTML = "";
+            for (let i = 0; i < Math.max(currentTitle.length, nextTitle.length); i++) {
+                const span = document.createElement("span");
+                span.textContent = currentTitle[i] || ""; // Use empty string if out of bounds
+                span.style.opacity = "1";
+                titleElement.appendChild(span);
             }
 
-            titleElement.textContent = currentText;
+            const spans = Array.from(titleElement.children);
 
-            let typingSpeed = isDeleting ? 100 : 150; // Speed up when deleting
-            if (!isDeleting && currentText === fullText) {
-                typingSpeed = 2000; // Pause before deleting
-                isDeleting = true;
-            } else if (isDeleting && currentText === "") {
-                isDeleting = false;
-                currentTitleIndex = (currentTitleIndex + 1) % titles.length; // Move to the next title
-            }
+            // Blending effect
+            const interval = setInterval(() => {
+                if (blendIndex < spans.length) {
+                    // Gradually reduce opacity for current characters
+                    if (spans[blendIndex]) {
+                        spans[blendIndex].style.opacity = "0";
+                    }
 
-            setTimeout(typeEffect, typingSpeed);
+                    // Update character to next title and increase opacity
+                    if (nextTitle[blendIndex]) {
+                        spans[blendIndex].textContent = nextTitle[blendIndex];
+                        spans[blendIndex].style.opacity = "1";
+                    }
+                    blendIndex++;
+                } else {
+                    // Cleanup and start next cycle
+                    clearInterval(interval);
+                    currentTitleIndex = (currentTitleIndex + 1) % titles.length;
+                    setTimeout(blendTitles, 1000); // Pause before next transition
+                }
+            }, 100); // Adjust blending speed
         }
 
         // Start the effect
-        typeEffect();
+        blendTitles();
+
 
     </script>
 
